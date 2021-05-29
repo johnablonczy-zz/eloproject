@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block head %}
+<title>Elo Project</title>
+{% endblock %}
+
+{% block body %}
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Elo Score</th>
+    </tr>
+    {% for elo in elos %}
+        <tr>
+            <td>{{ elo.name }}</td>
+            <td>{{ elo.score }}</td>
+        </tr>
+    {% endfor %}
+</table>
+
+<div class="form">
+    <form action="/" method="POST">
+        <input type="text" name="name" id="name" value="Name">
+        <input type="number" name="score" id = "score" value="1000">
+        <input type="submit" value="Add Elo">
+    </form>
+</div>
+
+<br>
+<br>
+
+
+{% endblock %}

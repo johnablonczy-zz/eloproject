@@ -34,5 +34,23 @@ def index():
         all_elos = Elo.query.order_by(Elo.score).all()
         return render_template('index.html', elos = all_elos)
 
+@app.route('/delete/<int:id>')
+def delete(id):
+    elo_to_delete = Elo.query.get_or_404(id)
+
+    try:
+        db.session.delete(elo_to_delete)
+        db.session.commit()
+        return redirect('/')
+    except:
+        return 'There was a problem deleting this elo'
+
+@app.route('/update_elos/')
+def update_elos():
+    all_elos = Elo.query.all()
+    names = request.form['name']
+    places = request.form['place']
+
+    
 if __name__ == "__main__":
     app.run(debug=True)

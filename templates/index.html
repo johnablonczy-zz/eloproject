@@ -8,11 +8,15 @@
     <tr>
         <th>Name</th>
         <th>Elo Score</th>
+        <th></th>
     </tr>
     {% for elo in elos %}
         <tr>
             <td>{{ elo.name }}</td>
             <td>{{ elo.score }}</td>
+            <td>
+                <a href="/delete/{{elo.id}}">Delete</a>
+            </td>
         </tr>
     {% endfor %}
 </table>
@@ -20,7 +24,7 @@
 <div class="form">
     <form action="/" method="POST">
         <input type="text" name="name" id="name" value="Name">
-        <input type="number" name="score" id = "score" value="1000">
+        <input type="number" name="score" id ="score" value="1000">
         <input type="submit" value="Add Elo">
     </form>
 </div>
@@ -28,5 +32,22 @@
 <br>
 <br>
 
+<div class="form">
+    <form action="/update_elos/" method="POST">
+        <input type="name" name="name" id="name" value="Name">
+        <input type="number" name="position" id ="place">
+        <br>
+        <input type="name" name="name" id="name" value="Name">
+        <input type="number" name="position" id ="place">
+        <br>
+        <input type="name" name="name" id="name" value="Name">
+        <input type="number" name="position" id ="place">
+        <br>
+        <input type="name" name="name" id="name" value="Name">
+        <input type="number" name="position" id ="place">
+        <br>
+        <input type="submit" value="Calculate Elos">
+    </form>
+</div>
 
 {% endblock %}

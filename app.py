@@ -31,7 +31,7 @@ def index():
             return 'There was a problem adding your elo'
             
     else:
-        all_elos = Elo.query.order_by(Elo.score).all()
+        all_elos = Elo.query.order_by(-(Elo.score)).all()
         return render_template('index.html', elos = all_elos)
 
 @app.route('/delete/<int:id>')
@@ -55,13 +55,16 @@ def update_elos():
         old_scores.append(score)
     
     for i in range(len(names)):
-        expected = int(1/(1 + 10**((1000-old_scores[i])/400)))
         elo_sum = 0
         for j in range(len(names)):
+            isWin = 0
             if j != i:
-                elo_sum += 32*(int(places[j]) - expected)
+                if places[i] < places[j]:
+                    isWin = 1
+                expected = 1/(1 + pow(10, (old_scores[j]-old_scores[i])/400))
+                elo_sum += old_scores[i]+32*(isWin - expected)
                 
-        Elo.query.filter_by(name=names[i]).first().score = old_scores[i] + elo_sum/(len(names)-1)
+        Elo.query.filter_by(name=names[i]).first().score = int(elo_sum/(len(names)-1))
 
     db.session.commit()
 
@@ -69,6 +72,3 @@ def update_elos():
     
 if __name__ == "__main__":
     app.run(debug=True)
-
-#expected = 1/(1+10^(elo2-elo1/400))
-#elo1 = elo1 + 32*(actual - expected)

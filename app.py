@@ -45,12 +45,30 @@ def delete(id):
     except:
         return 'There was a problem deleting this elo'
 
-@app.route('/update_elos/')
+@app.route('/update_elos/', methods=['POST', 'GET'])
 def update_elos():
-    all_elos = Elo.query.all()
-    names = request.form['name']
-    places = request.form['place']
+    names = request.form.getlist('name')
+    places = request.form.getlist('place')
+    old_scores = []
+    for name in names:
+        score = Elo.query.filter_by(name=name).first().score
+        old_scores.append(score)
+    
+    for i in range(len(names)):
+        expected = int(1/(1 + 10**((1000-old_scores[i])/400)))
+        elo_sum = 0
+        for j in range(len(names)):
+            if j != i:
+                elo_sum += 32*(int(places[j]) - expected)
+                
+        Elo.query.filter_by(name=names[i]).first().score = old_scores[i] + elo_sum/(len(names)-1)
 
+    db.session.commit()
+
+    return redirect('/')
     
 if __name__ == "__main__":
     app.run(debug=True)
+
+#expected = 1/(1+10^(elo2-elo1/400))
+#elo1 = elo1 + 32*(actual - expected)

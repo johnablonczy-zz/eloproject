@@ -8,3 +8,4 @@ Jinja2==3.0.1
 MarkupSafe==2.0.1
 SQLAlchemy==1.4.16
 Werkzeug==2.0.1
+WTForms==2.3.3

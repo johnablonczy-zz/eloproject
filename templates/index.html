@@ -4,6 +4,22 @@
 {% endblock %}
 
 {% block body %}
+<div class="form">
+    <form method="post" action="/">
+        {{eloaddform.name.label}} {{ eloaddform.name }}
+        {{eloaddform.score.label}} {{ eloaddform.score }}
+        <input type="submit" value="Add Elo"/>
+    </form>
+</div>
+
+<div class="form">
+    <form method="post" action="/add_player/">
+        {{ playeraddform.player }}
+        <input type="submit" value="+"/>
+    </form>
+</div>
+
+
 <table>
     <tr>
         <th>Name</th>
@@ -21,33 +37,27 @@
     {% endfor %}
 </table>
 
-<div class="form">
-    <form action="/" method="POST">
-        <input type="text" name="name" id="name" value="Name">
-        <input type="number" name="score" id ="score" value="1000">
-        <input type="submit" value="Add Elo">
-    </form>
-</div>
-
 <br>
 <br>
 
-<div class="form">
-    <form action="/update_elos/" method="POST">
-        <input type="name" name="name" id="name" value="Name">
-        <input type="number" name="place" id ="place">
-        <br>
-        <input type="name" name="name" id="name" value="Name">
-        <input type="number" name="place" id ="place">
-        <br>
-        <input type="name" name="name" id="name" value="Name">
-        <input type="number" name="place" id ="place">
-        <br>
-        <input type="name" name="name" id="name" value="Name">
-        <input type="number" name="place" id ="place">
-        <br>
-        <input type="submit" value="Calculate Elos">
-    </form>
-</div>
+<form method="post" action="/calc_elo/">
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Elo</th>
+            <th>Place</th>
+        </tr>
+        {% for player in players %}
+            <tr>
+                <td>{{ player.name }}</td>
+                <td>{{ player.score }}</td>
+                <td>
+                    {{ placeform.place }}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <input type="submit" value="calc"/>
+</form>
 
 {% endblock %}
